@@ -1,19 +1,16 @@
 package vn.peterbui.myproject.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ErrorResponse {
     private int statusCode;
-    private Date timestamp;
-    private String message;
-    private String description;
 
-    public ErrorResponse (int statusCode, Date timestamp, String message, String description){
-        this.statusCode = statusCode;
-        this.timestamp = timestamp;
-        this.message = message;
-        this.description = description;
-    }
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
+    private String message;
+
 
     public int getStatusCode() {
         return statusCode;
@@ -23,11 +20,11 @@ public class ErrorResponse {
         this.statusCode = statusCode;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -39,18 +36,10 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Override
     public String toString() {
-        return "ErrorResponse [statusCode=" + statusCode + ", timestamp=" + timestamp + ", message=" + message
-                + ", description=" + description + "]";
+        return "ErrorResponse [statusCode=" + statusCode + ", timestamp=" + timestamp + ", message=" + message + "]";
     }
 
 }

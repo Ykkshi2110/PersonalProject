@@ -4,27 +4,34 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) // cái nào null thì sẽ không kèm vào
 public class ApiResponse <T>{
-    private int code;
-    private String message;
-    private T result;
-
-    public int getCode() {
-        return code;
+    private int statusCode;
+    private Object message;
+    private String error;
+    private T data;
+    
+    public int getStatusCode() {
+        return statusCode;
     }
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
-    public String getMessage() {
+    public Object getMessage() {
         return message;
     }
-    public void setMessage(String message) {
+    public void setMessage(Object message) {
         this.message = message;
     }
-    public T getResult() {
-        return result;
+    public String getError() {
+        return error;
     }
-    public void setResult(T result) {
-        this.result = result;
+    public void setError(String error) {
+        this.error = error;
+    }
+    public T getData() {
+        return data;
+    }
+    public void setData(T data) {
+        this.data = data;
     }
 
     

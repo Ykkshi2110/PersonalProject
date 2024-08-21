@@ -10,6 +10,7 @@ import vn.peterbui.myproject.domain.Role;
 import vn.peterbui.myproject.domain.User;
 import vn.peterbui.myproject.domain.dto.CreateUserRequest;
 import vn.peterbui.myproject.exception.UserDoesNotExist;
+import vn.peterbui.myproject.exception.UserExistedException;
 import vn.peterbui.myproject.repository.UserRepository;
 @Service
 public class UserService {
@@ -30,8 +31,9 @@ public class UserService {
                 .orElseThrow(() -> new UserDoesNotExist("USER DOESN'T EXIST WITH ID = " + id));
     }
 
-    public String handleCreateUser(@Valid CreateUserRequest createUserRequest) {
+    public User handleCreateUser(@Valid CreateUserRequest createUserRequest) {
         User user = new User();
+        if(this.userRepository.existsByEmail(createUserRequest.getEmail())) throw new UserExistedException("USER EXISTED!");
         user.setAddress(createUserRequest.getAddress());
         user.setAvatar(createUserRequest.getAvatar());
         user.setEmail(createUserRequest.getEmail());
@@ -42,11 +44,10 @@ public class UserService {
                 .map(roleService::findRoleByName)
                 .collect(Collectors.toSet());
         user.setRoles(roles);
-        this.userRepository.save(user);
-        return "CREATE USER SUCCESSFULLY";
+        return this.userRepository.save(user);
     }
 
-    public String handleUpdateUser(User user) {
+    public User handleUpdateUser(User user) {
         User currentUser = this.userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserDoesNotExist("USER DOESN'T EXIST WITH ID = " + user.getId()));
         currentUser.setAddress(user.getAddress());
@@ -56,17 +57,15 @@ public class UserService {
                             .map(role -> roleService.findRoleByName(role.getName()))
                             .collect(Collectors.toSet());
         currentUser.setRoles(roles);
-        this.userRepository.save(currentUser);
-        return "UPDATE USER SUCCESSFULLY";
+        return this.userRepository.save(currentUser);
     }
 
-    public String handleDeleteUser(long id) {
+    public void handleDeleteUser(long id) {
         User currentUser = this.userRepository.findById(id).orElse(null);
         if (currentUser == null) {
             throw new UserDoesNotExist("USER DOES NOT EXIST!!!");
         } else {
             this.userRepository.delete(currentUser);
-            return "DELETE USER SUCCESSFULLY";
         }
     }
 
