@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
 import vn.peterbui.myproject.domain.Role;
@@ -16,10 +17,12 @@ import vn.peterbui.myproject.repository.UserRepository;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleService roleService) {
+    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUser() {
@@ -37,7 +40,7 @@ public class UserService {
         user.setAddress(createUserRequest.getAddress());
         user.setAvatar(createUserRequest.getAvatar());
         user.setEmail(createUserRequest.getEmail());
-        user.setPassword(createUserRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
         user.setFullName(createUserRequest.getFullName());
         user.setPhone(createUserRequest.getPhone());
         Set<Role> roles = createUserRequest.getRoleType().stream()
@@ -67,6 +70,10 @@ public class UserService {
         } else {
             this.userRepository.delete(currentUser);
         }
+    }
+
+    public User handleGetUserByUserName(String email){
+        return this.userRepository.getUserByEmail(email);
     }
 
 }
