@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors; 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
@@ -27,12 +28,12 @@ public class UserService {
     private final ConvertUtils convertUtils;
     
 
-    public ResultPaginationDTO getAllUser(Pageable pageable) {
-        Page<User> pageUsers = this.userRepository.findAll(pageable);
+    public ResultPaginationDTO getAllUser(Specification<User> spec, Pageable pageable) {
+        Page<User> pageUsers = this.userRepository.findAll(spec, pageable);
         Page<UserDTO> pageUserDTOs = pageUsers.map(convertUtils::convertToDto);
         Meta meta = new Meta();
-        meta.setCurrent(pageUserDTOs.getNumber()+1);
-        meta.setPageSize(pageUserDTOs.getSize());
+        meta.setCurrent(pageable.getPageNumber()+1);
+        meta.setPageSize(pageable.getPageSize());
         meta.setPages(pageUserDTOs.getTotalPages());
         meta.setTotal(pageUserDTOs.getTotalElements());
 
