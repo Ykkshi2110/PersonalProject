@@ -1,32 +1,45 @@
 package vn.peterbui.myproject.service;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
+import java.util.stream.Collectors; 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import vn.peterbui.myproject.convert.ConvertUtils;
+import vn.peterbui.myproject.domain.Meta;
 import vn.peterbui.myproject.domain.Role;
 import vn.peterbui.myproject.domain.User;
 import vn.peterbui.myproject.domain.dto.CreateUserRequest;
+import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.dto.UserDTO;
 import vn.peterbui.myproject.exception.UserDoesNotExist;
 import vn.peterbui.myproject.exception.UserExistedException;
 import vn.peterbui.myproject.repository.UserRepository;
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final ConvertUtils convertUtils;
+    
 
-    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    public ResultPaginationDTO getAllUser(Pageable pageable) {
+        Page<User> pageUsers = this.userRepository.findAll(pageable);
+        Page<UserDTO> pageUserDTOs = pageUsers.map(convertUtils::convertToDto);
+        Meta meta = new Meta();
+        meta.setCurrent(pageUserDTOs.getNumber()+1);
+        meta.setPageSize(pageUserDTOs.getSize());
+        meta.setPages(pageUserDTOs.getTotalPages());
+        meta.setTotal(pageUserDTOs.getTotalElements());
 
-    public List<User> getAllUser() {
-        return this.userRepository.findAll();
+        ResultPaginationDTO resultPaginationDTO = new ResultPaginationDTO();
+        resultPaginationDTO.setMeta(meta);
+        resultPaginationDTO.setResult(pageUserDTOs.getContent());
+        return resultPaginationDTO;
     }
 
     public User getUserById(long id) {

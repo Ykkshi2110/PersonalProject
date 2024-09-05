@@ -1,7 +1,9 @@
 package vn.peterbui.myproject.controller;
 
-import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,13 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.validation.Valid;
 import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.domain.ApiResponse;
 import vn.peterbui.myproject.domain.User;
 import vn.peterbui.myproject.domain.dto.CreateUserRequest;
+import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
 import vn.peterbui.myproject.domain.dto.UserDTO;
 import vn.peterbui.myproject.service.UserService;
 
@@ -33,12 +36,18 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getUser() {
-        List<UserDTO> usersDTO = this.userService.getAllUser()
-                .stream()
-                .map(convertUtils::convertToDto)
-                .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(usersDTO);
+    public ResponseEntity<ResultPaginationDTO> getUser(@RequestParam("current") Optional<String> currentOptional,
+            @RequestParam("pageSize") Optional<String> pageSizeOptional) {
+        String sCurrent = currentOptional.isPresent()  ? currentOptional.get() : "";
+        String sPageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";
+
+        int current = Integer.parseInt(sCurrent);
+        int pageSize = Integer.parseInt(sPageSize);
+
+        // Phải truyền tham số vào là current - 1 vì trang đầu tiên thư viện mặc định bằng 0
+        Pageable pageable = PageRequest.of( current - 1, pageSize);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUser(pageable));
     }
 
     @GetMapping("/users/{id}")
@@ -61,8 +70,8 @@ public class UserController {
 
     @DeleteMapping("/users/delete/{id}")
     public ResponseEntity<ApiResponse<Object>> handleDeleteUser(@PathVariable long id) {
-         this.userService.handleDeleteUser(id);
-         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        this.userService.handleDeleteUser(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
 }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class SecurityUtil {
     private final JwtEncoder jwtEncoder;
 
-    public SecurityUtil (JwtEncoder jwtEncoder){
+    public SecurityUtil(JwtEncoder jwtEncoder) {
         this.jwtEncoder = jwtEncoder;
     }
 
@@ -40,7 +40,6 @@ public class SecurityUtil {
             .claim("peterBui", authentication)
             .build();
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
-        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,
-        claims)).getTokenValue();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
     }
 }
