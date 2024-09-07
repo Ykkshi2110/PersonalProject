@@ -3,6 +3,7 @@ package vn.peterbui.myproject.domain;
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -45,6 +46,9 @@ public class User{
     private String password;
     private String phone;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String refreshToken;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_role",
@@ -52,5 +56,7 @@ public class User{
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    
 
 }
