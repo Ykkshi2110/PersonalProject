@@ -98,4 +98,8 @@ public class UserService {
         }
     }
 
+    public User getUserRefreshTokenAndEmail(String token, String email){
+        return this.userRepository.findByRefreshTokenAndEmail(token, email);
+    }
+
 }

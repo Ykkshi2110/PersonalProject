@@ -11,4 +11,5 @@ import vn.peterbui.myproject.domain.User;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>{
     boolean existsByEmail (String email);
     User getUserByEmail(String email);
+    User findByRefreshTokenAndEmail(String token, String email);
 }

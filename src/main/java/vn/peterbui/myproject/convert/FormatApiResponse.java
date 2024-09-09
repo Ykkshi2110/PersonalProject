@@ -25,6 +25,11 @@ public class FormatApiResponse implements ResponseBodyAdvice {
             ServerHttpResponse response) {
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int status = servletResponse.getStatus();
+
+        if(body instanceof String){
+            return body;
+        }
+        
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(status);
 

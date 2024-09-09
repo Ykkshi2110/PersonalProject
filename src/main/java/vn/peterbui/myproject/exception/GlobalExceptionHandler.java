@@ -15,7 +15,7 @@ import vn.peterbui.myproject.domain.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class})
+    @ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class, IdInvalidException.class})
     public ResponseEntity<ApiResponse<Object>> handleIdException(Exception e){
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
