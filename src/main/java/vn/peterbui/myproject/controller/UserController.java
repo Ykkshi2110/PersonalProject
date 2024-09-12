@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.turkraft.springfilter.boot.Filter;
-
 import jakarta.validation.Valid;
 import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
@@ -39,7 +37,6 @@ public class UserController {
     @GetMapping("/users")
     @ApiMessage("fetch all user")
     public ResponseEntity<ResultPaginationDTO> getUser(@Filter Specification<User> spec, Pageable pageable) {
-        
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUser(spec, pageable));
     }
 

@@ -1,7 +1,5 @@
 package vn.peterbui.myproject.domain.dto;
 
-import java.util.List;
-
 public class UserDTO {
     private long id;
     private String address;
@@ -9,7 +7,6 @@ public class UserDTO {
     private String email;
     private String fullName;
     private String phone;
-    private List<String> roleNames; // danh sách tên role
     public long getId() {
         return id;
     }
@@ -46,13 +43,6 @@ public class UserDTO {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public List<String> getRoleNames() {
-        return roleNames;
-    }
-    public void setRoleNames(List<String> roleNames) {
-        this.roleNames = roleNames;
-    }
-    
 
     
 

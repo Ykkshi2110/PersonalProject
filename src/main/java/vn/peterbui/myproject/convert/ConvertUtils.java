@@ -25,11 +25,6 @@ public class ConvertUtils {
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getFullName());
         userDTO.setPhone(user.getPhone());
-
-        List<String> roleNames = user.getRoles().stream()
-                .map(role -> role.getName().name())
-                .collect(Collectors.toList());
-        userDTO.setRoleNames(roleNames);
         return userDTO;
     }
 }

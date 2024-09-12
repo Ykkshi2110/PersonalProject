@@ -15,8 +15,9 @@ import vn.peterbui.myproject.domain.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class, IdInvalidException.class})
-    public ResponseEntity<ApiResponse<Object>> handleIdException(Exception e){
+    @ExceptionHandler(value = { UsernameNotFoundException.class, BadCredentialsException.class,
+            IdInvalidException.class, PermissionAttributeExists.class})
+    public ResponseEntity<ApiResponse<Object>> handleIdException(Exception e) {
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setError(e.getMessage());
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = UserDoesNotExist.class)
-    ResponseEntity<ApiResponse<Object>> handlingUserDoesNotEx (UserDoesNotExist userDoesNotExist){
+    ResponseEntity<ApiResponse<Object>> handlingUserDoesNotEx(UserDoesNotExist userDoesNotExist) {
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(HttpStatus.NOT_FOUND.value());
         res.setMessage(userDoesNotExist.getMessage());
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = UserExistedException.class)
-    ResponseEntity<ApiResponse<Object>> handlingUserExistedEx (UserExistedException e){
+    ResponseEntity<ApiResponse<Object>> handlingUserExistedEx(UserExistedException e) {
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(HttpStatus.CONFLICT.value());
         res.setMessage(e.getMessage());
@@ -46,18 +47,14 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse<Object>> handlingValidationEx(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
         final List<FieldError> fieldErrors = result.getFieldErrors();
-        
-       ApiResponse<Object> res = new ApiResponse<>();
-       res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-       res.setError(e.getBody().getDetail());
 
-       List<String> errors = fieldErrors.stream().map(f -> f.getDefaultMessage()).collect(Collectors.toList());
-       res.setMessage(errors.size() > 1 ? errors : errors.get(0));
-       
-       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        ApiResponse<Object> res = new ApiResponse<>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(e.getBody().getDetail());
+
+        List<String> errors = fieldErrors.stream().map(f -> f.getDefaultMessage()).collect(Collectors.toList());
+        res.setMessage(errors.size() > 1 ? errors : errors.get(0));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
-
- 
-
-
 }

@@ -1,11 +1,8 @@
 package vn.peterbui.myproject.domain.dto;
 
-import java.util.Set;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import vn.peterbui.myproject.type.RoleType;
 
 public class CreateUserRequest {
     @NotNull
@@ -21,7 +18,6 @@ public class CreateUserRequest {
     @Size(min = 6, message = "Password must be at least 6 character")
     private String password;
     private String phone;
-    private Set<RoleType> roleType;
 
     public String getAddress() {
         return address;
@@ -70,21 +66,5 @@ public class CreateUserRequest {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    @Override
-    public String toString() {
-        return "CreateUserRequest [address=" + address + ", avatar=" + avatar + ", email=" + email + ", fullName="
-                + fullName + ", password=" + password + ", phone=" + phone + ", roles=" + roleType + "]";
-    }
-
-    public Set<RoleType> getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(Set<RoleType> roleType) {
-        this.roleType = roleType;
-    }
-
-    
 
 }
