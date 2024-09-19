@@ -63,12 +63,9 @@ public class RoleService {
         return this.roleRepository.save(currentRole);
     }
 
+    // Vì role là ownerside nên chỉ cần xóa là những liên quan Entity liên kết đều đc xóa trong permission_role
     public void handleDeleteRole(long id){
         Role currentRole = this.roleRepository.findById(id).orElseThrow(() -> new IdInvalidException("Role does not exists"));
-        for (Permission permission : currentRole.getPermissions()){
-            permission.getRoles().remove(currentRole);
-        }
-        currentRole.getPermissions().clear();
         this.roleRepository.delete(currentRole);
     }
 

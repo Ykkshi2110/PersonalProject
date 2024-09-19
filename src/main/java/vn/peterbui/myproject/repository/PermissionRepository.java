@@ -9,9 +9,6 @@ import vn.peterbui.myproject.domain.Permission;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Long>, JpaSpecificationExecutor<Permission> {
-    boolean existsByApiPath(String apiPath);
-    boolean existsByMethod(String method);
-    boolean existsByModule(String module);
-    Permission findById(long id);
+    boolean existsByApiPathAndMethodAndModule(String apiPath, String method, String module);
     List<Permission> findByIdIn(List<Long> reqPermissions);
 }
