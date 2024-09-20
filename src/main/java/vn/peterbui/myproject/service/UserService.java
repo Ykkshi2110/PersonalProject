@@ -9,12 +9,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.domain.Meta;
+import vn.peterbui.myproject.domain.Role;
 import vn.peterbui.myproject.domain.User;
 import vn.peterbui.myproject.domain.dto.CreateUserRequest;
 import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
 import vn.peterbui.myproject.domain.dto.UserDTO;
+import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.exception.UserDoesNotExist;
 import vn.peterbui.myproject.exception.UserExistedException;
+import vn.peterbui.myproject.repository.RoleRepository;
 import vn.peterbui.myproject.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConvertUtils convertUtils;
-    
+    private final RoleRepository roleRepository;
 
     public ResultPaginationDTO getAllUser(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = this.userRepository.findAll(spec, pageable);
@@ -53,6 +56,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
         user.setFullName(createUserRequest.getFullName());
         user.setPhone(createUserRequest.getPhone());
+
+        // check Role by id 
+        Role reqRole = this.roleRepository.findById(createUserRequest.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+        user.setRole(reqRole);
+        
         return this.userRepository.save(user);
     }
 
@@ -62,6 +70,11 @@ public class UserService {
         currentUser.setAddress(user.getAddress());
         currentUser.setFullName(user.getFullName());
         currentUser.setPhone(user.getPhone());
+
+        // check role by id 
+        Role reqRole = this.roleRepository.findById(user.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+        currentUser.setRole(reqRole);
+
         return this.userRepository.save(currentUser);
     }
 

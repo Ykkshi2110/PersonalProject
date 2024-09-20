@@ -27,11 +27,23 @@ public class ResLoginDTO {
         private String name;
     }
 
+    // Trả về khi Get Account
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UserGetAccount {
         private UserLogin user;
+    }
+
+    // Lưu trữ lại thông tin bên trong Token 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserInsideToken {
+        private long id;
+        private String email;
+        private String name;
     }
 }

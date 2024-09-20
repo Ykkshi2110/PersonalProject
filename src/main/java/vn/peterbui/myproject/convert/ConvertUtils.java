@@ -1,11 +1,10 @@
 package vn.peterbui.myproject.convert;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import vn.peterbui.myproject.domain.User;
+import vn.peterbui.myproject.domain.dto.RoleDTO;
 import vn.peterbui.myproject.domain.dto.UserDTO;
 
 @Component
@@ -25,6 +24,12 @@ public class ConvertUtils {
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getFullName());
         userDTO.setPhone(user.getPhone());
+
+        // Set roleDTO
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(user.getRole().getId());
+        roleDTO.setName(user.getRole().getName());
+        userDTO.setRole(roleDTO);
         return userDTO;
     }
 }

@@ -59,7 +59,7 @@ public class AuthController {
         }
 
         // create token
-        String accessToken = this.securityUtil.createAccessToken(authentication.getName(), resLoginDTO.getUserLogin());
+        String accessToken = this.securityUtil.createAccessToken(authentication.getName(), resLoginDTO);
         resLoginDTO.setAccessToken(accessToken);
 
         // create refresh token
@@ -122,7 +122,7 @@ public class AuthController {
         }
 
         // create token
-        String accessToken = this.securityUtil.createAccessToken(email, resLoginDTO.getUserLogin());
+        String accessToken = this.securityUtil.createAccessToken(email, resLoginDTO);
 
         resLoginDTO.setAccessToken(accessToken);
 
