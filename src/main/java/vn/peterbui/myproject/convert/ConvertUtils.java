@@ -1,6 +1,5 @@
 package vn.peterbui.myproject.convert;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import vn.peterbui.myproject.domain.User;
@@ -26,10 +25,13 @@ public class ConvertUtils {
         userDTO.setPhone(user.getPhone());
 
         // Set roleDTO
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(user.getRole().getId());
-        roleDTO.setName(user.getRole().getName());
-        userDTO.setRole(roleDTO);
+        // Register người dùng không nhập Role vào 
+        if (user.getRole() != null) {
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setId(user.getRole().getId());
+            roleDTO.setName(user.getRole().getName());
+            userDTO.setRole(roleDTO);
+        }
         return userDTO;
     }
 }

@@ -21,19 +21,25 @@ public class FormatApiResponse implements ResponseBodyAdvice {
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request,
+    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
+            Class selectedConverterType, ServerHttpRequest request,
             ServerHttpResponse response) {
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int status = servletResponse.getStatus();
 
-        if(body instanceof String){
+        if (body instanceof String) {
             return body;
         }
-        
+
+        String path = request.getURI().getPath();
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
+            return body;
+        }
+
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(status);
 
-        if(status >= 400) {
+        if (status >= 400) {
             // case error
             return body;
         } else {
@@ -45,4 +51,3 @@ public class FormatApiResponse implements ResponseBodyAdvice {
         return res;
     }
 }
-

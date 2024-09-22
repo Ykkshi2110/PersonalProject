@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.turkraft.springfilter.boot.Filter;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
@@ -30,25 +28,31 @@ public class RoleController {
 
     @PostMapping("/roles/create")
     @ApiMessage("Create a role")
-    public ResponseEntity<Role> handleCreateRole(@RequestBody @Valid Role role){
+    public ResponseEntity<Role> handleCreateRole(@RequestBody @Valid Role role) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.handleCreateRole(role));
     }
 
     @GetMapping("/roles")
     @ApiMessage("Fetcch all role")
-    public ResponseEntity<ResultPaginationDTO>fetchAllRole(@Filter Specification<Role> spec, Pageable pageable){
+    public ResponseEntity<ResultPaginationDTO> fetchAllRole(@Filter Specification<Role> spec, Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(this.roleService.handleFetchAllRole(spec, pageable));
+    }
+
+    @GetMapping("/roles/{id}")
+    @ApiMessage("Fetch role by id")
+    public ResponseEntity<Role> fetchRoleById(@PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.roleService.fetchRoleById(id));
     }
 
     @PutMapping("/roles/update")
     @ApiMessage("Update a role")
-    public ResponseEntity<Role> handleUpdateRole(@RequestBody Role role){
+    public ResponseEntity<Role> handleUpdateRole(@RequestBody Role role) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.handleUpdateRole(role));
     }
 
     @DeleteMapping("/roles/delete/{id}")
     @ApiMessage("Delete a role")
-    public ResponseEntity<Void> handleDeleteRole(@PathVariable long id){
+    public ResponseEntity<Void> handleDeleteRole(@PathVariable long id) {
         this.roleService.handleDeleteRole(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }

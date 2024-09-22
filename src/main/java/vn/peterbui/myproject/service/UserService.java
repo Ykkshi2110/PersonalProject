@@ -58,8 +58,10 @@ public class UserService {
         user.setPhone(createUserRequest.getPhone());
 
         // check Role by id 
-        Role reqRole = this.roleRepository.findById(createUserRequest.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
-        user.setRole(reqRole);
+        if(createUserRequest.getRole() != null){
+            Role reqRole = this.roleRepository.findById(createUserRequest.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+            user.setRole(reqRole);
+        }
         
         return this.userRepository.save(user);
     }
@@ -103,4 +105,7 @@ public class UserService {
         return this.userRepository.findByRefreshTokenAndEmail(token, email);
     }
 
+    public boolean checkEmailExists(String email){
+        return this.userRepository.existsByEmail(email);
+    }
 }

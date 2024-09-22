@@ -2,12 +2,10 @@ package vn.peterbui.myproject.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.peterbui.myproject.domain.Meta;
@@ -23,6 +21,7 @@ public class RoleService {
     private final RoleRepository roleRepository;
     private final PermissionService permissionService;
 
+    private static final String ERROR_ROLE_EXISTS = "Role does not exists";
     public Role handleCreateRole(@Valid Role role) {
         if (this.roleRepository.existsByName(role.getName()))
             throw new IdInvalidException("Role name already exists");
@@ -51,7 +50,7 @@ public class RoleService {
     }
 
     public Role handleUpdateRole(Role role){
-        Role currentRole = this.roleRepository.findById(role.getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+        Role currentRole = this.roleRepository.findById(role.getId()).orElseThrow(() -> new IdInvalidException(ERROR_ROLE_EXISTS));
         currentRole.setName(role.getName());
         currentRole.setDescription(role.getDescription());
         currentRole.setActive(role.isActive());
@@ -65,8 +64,12 @@ public class RoleService {
 
     // Vì role là ownerside nên chỉ cần xóa là những liên quan Entity liên kết đều đc xóa trong permission_role
     public void handleDeleteRole(long id){
-        Role currentRole = this.roleRepository.findById(id).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+        Role currentRole = this.roleRepository.findById(id).orElseThrow(() -> new IdInvalidException(ERROR_ROLE_EXISTS));
         this.roleRepository.delete(currentRole);
+    }
+
+    public Role fetchRoleById(long id){
+        return this.roleRepository.findById(id).orElseThrow(() -> new IdInvalidException(ERROR_ROLE_EXISTS));
     }
 
 }

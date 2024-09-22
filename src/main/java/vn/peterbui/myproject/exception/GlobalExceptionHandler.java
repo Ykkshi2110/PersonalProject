@@ -16,7 +16,7 @@ import vn.peterbui.myproject.domain.ApiResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = { UsernameNotFoundException.class, BadCredentialsException.class,
-            IdInvalidException.class, PermissionAttributeExists.class})
+            IdInvalidException.class, PermissionAttributeExists.class })
     public ResponseEntity<ApiResponse<Object>> handleIdException(Exception e) {
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -56,5 +56,15 @@ public class GlobalExceptionHandler {
         res.setMessage(errors.size() > 1 ? errors : errors.get(0));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
+    // Handle exception not define
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Object>> handleAllException(Exception ex) {
+        ApiResponse<Object> res = new ApiResponse<>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setMessage(ex.getMessage());
+        res.setError("Internal Server Error");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
     }
 }

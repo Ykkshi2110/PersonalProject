@@ -2,6 +2,7 @@ package vn.peterbui.myproject.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.SecurityUtil;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.User;
+import vn.peterbui.myproject.domain.dto.CreateUserRequest;
 import vn.peterbui.myproject.domain.dto.LoginDTO;
 import vn.peterbui.myproject.domain.dto.ResLoginDTO;
+import vn.peterbui.myproject.domain.dto.UserDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.service.UserService;
 
@@ -33,6 +37,7 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
     private final UserService userService;
+    private final ConvertUtils convertUtils;
     @Value("${peterBui.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
 
@@ -162,5 +167,17 @@ public class AuthController {
             .build();
 
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, deleteSpringCookie.toString()).body(null);
+    }
+    
+    @PostMapping("/auth/register")
+    @ApiMessage("Register a new user")
+    public ResponseEntity<UserDTO> register (@Valid @RequestBody CreateUserRequest createUserRequest){
+        boolean checkEmailRegister = this.userService.checkEmailExists(createUserRequest.getEmail());
+        if(checkEmailRegister){
+            throw new IdInvalidException("Email " + createUserRequest.getEmail() + " already exists");
+        }
+
+        UserDTO userDTO = this.convertUtils.convertToDto(this.userService.handleCreateUser(createUserRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
     }
 }
