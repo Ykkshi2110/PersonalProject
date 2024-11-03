@@ -15,17 +15,12 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;   
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import vn.peterbui.myproject.convert.SecurityUtil;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor 
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
 @Table(name = "users")
 public class User{
     @Id

@@ -142,6 +142,7 @@ public class SecurityUtil {
         return Optional.ofNullable(securityContext.getAuthentication())
             .filter(authentication -> authentication.getCredentials() instanceof String)
             .map(authentication -> (String) authentication.getCredentials());
+            
     }
 
     /**
