@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.Role;
-import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.service.RoleService;
 
 @RestController

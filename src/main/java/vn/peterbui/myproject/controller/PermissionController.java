@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.Permission;
-import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.service.PermissionService;
 
 @RestController

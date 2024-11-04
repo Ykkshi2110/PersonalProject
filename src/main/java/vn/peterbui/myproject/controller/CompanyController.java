@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.Company;
-import vn.peterbui.myproject.domain.dto.ResCompanyDTO;
-import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.response.ResCompanyDTO;
+import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.service.CompanyService;
 
 @RestController

@@ -1,4 +1,4 @@
-package vn.peterbui.myproject.domain.dto;
+package vn.peterbui.myproject.domain.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -18,9 +18,9 @@ import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.ApiResponse;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.ReqCreateUser;
-import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
-import vn.peterbui.myproject.domain.dto.ResUserDTO;
+import vn.peterbui.myproject.domain.request.ReqCreateUser;
+import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.response.ResUserDTO;
 import vn.peterbui.myproject.service.UserService;
 
 @RestController

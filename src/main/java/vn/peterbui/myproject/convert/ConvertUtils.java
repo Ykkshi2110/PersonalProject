@@ -3,8 +3,8 @@ package vn.peterbui.myproject.convert;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.ResRoleDTO;
-import vn.peterbui.myproject.domain.dto.ResUserDTO;
+import vn.peterbui.myproject.domain.response.ResRoleDTO;
+import vn.peterbui.myproject.domain.response.ResUserDTO;
 
 @Component
 public class ConvertUtils {

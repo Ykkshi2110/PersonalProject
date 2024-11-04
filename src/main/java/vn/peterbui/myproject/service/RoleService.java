@@ -8,10 +8,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import vn.peterbui.myproject.domain.dto.Meta;
+import vn.peterbui.myproject.domain.response.Meta;
 import vn.peterbui.myproject.domain.Permission;
 import vn.peterbui.myproject.domain.Role;
-import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.repository.RoleRepository;
 

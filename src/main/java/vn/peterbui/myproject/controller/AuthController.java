@@ -23,10 +23,10 @@ import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.SecurityUtil;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.ReqCreateUser;
-import vn.peterbui.myproject.domain.dto.ReqLoginDTO;
-import vn.peterbui.myproject.domain.dto.ResLoginDTO;
-import vn.peterbui.myproject.domain.dto.ResUserDTO;
+import vn.peterbui.myproject.domain.request.ReqCreateUser;
+import vn.peterbui.myproject.domain.request.ReqLoginDTO;
+import vn.peterbui.myproject.domain.response.ResLoginDTO;
+import vn.peterbui.myproject.domain.response.ResUserDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.service.UserService;
 
