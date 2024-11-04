@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RoleDTO {
+public class ResRoleDTO {
     private long id;
     private String name;
 }

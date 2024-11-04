@@ -1,4 +1,4 @@
-package vn.peterbui.myproject.domain;
+package vn.peterbui.myproject.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

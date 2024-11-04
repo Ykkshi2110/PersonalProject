@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.peterbui.myproject.convert.ConvertUtils;
-import vn.peterbui.myproject.domain.Meta;
+import vn.peterbui.myproject.domain.dto.Meta;
 import vn.peterbui.myproject.domain.Role;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.CreateUserRequest;
+import vn.peterbui.myproject.domain.dto.ReqCreateUser;
 import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
-import vn.peterbui.myproject.domain.dto.UserDTO;
+import vn.peterbui.myproject.domain.dto.ResUserDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.exception.UserDoesNotExist;
 import vn.peterbui.myproject.exception.UserExistedException;
@@ -29,7 +29,7 @@ public class UserService {
 
     public ResultPaginationDTO getAllUser(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = this.userRepository.findAll(spec, pageable);
-        Page<UserDTO> pageUserDTOs = pageUsers.map(convertUtils::convertToDto);
+        Page<ResUserDTO> pageUserDTOs = pageUsers.map(convertUtils::convertToDto);
         Meta meta = new Meta();
         meta.setPage(pageable.getPageNumber()+1);
         meta.setPageSize(pageable.getPageSize());
@@ -47,19 +47,20 @@ public class UserService {
                 .orElseThrow(() -> new UserDoesNotExist("USER DOESN'T EXIST WITH ID = " + id));
     }
 
-    public User handleCreateUser(@Valid CreateUserRequest createUserRequest) {
+    public User handleCreateUser(@Valid ReqCreateUser reqCreateUser) {
         User user = new User();
-        if(this.userRepository.existsByEmail(createUserRequest.getEmail())) throw new UserExistedException("USER EXISTED!");
-        user.setAddress(createUserRequest.getAddress());
-        user.setAvatar(createUserRequest.getAvatar());
-        user.setEmail(createUserRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
-        user.setFullName(createUserRequest.getFullName());
-        user.setAge(createUserRequest.getAge());
-        user.setGender(createUserRequest.getGender());
+        if(this.userRepository.existsByEmail(reqCreateUser.getEmail())) throw new UserExistedException("USER EXISTED!");
+        user.setAddress(reqCreateUser.getAddress());
+        user.setAvatar(reqCreateUser.getAvatar());
+        user.setEmail(reqCreateUser.getEmail());
+        user.setPassword(passwordEncoder.encode(reqCreateUser.getPassword()));
+        user.setFullName(reqCreateUser.getFullName());
+        user.setAge(reqCreateUser.getAge());
+        user.setGender(reqCreateUser.getGender());
         // check Role by id 
-        if(createUserRequest.getRole() != null){
-            Role reqRole = this.roleRepository.findById(createUserRequest.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+        if(reqCreateUser.getRole() != null){
+            Role reqRole = this.roleRepository.findById(reqCreateUser
+                    .getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
             user.setRole(reqRole);
         }
         

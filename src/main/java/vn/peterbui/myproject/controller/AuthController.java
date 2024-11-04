@@ -23,10 +23,10 @@ import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.SecurityUtil;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.CreateUserRequest;
-import vn.peterbui.myproject.domain.dto.LoginDTO;
+import vn.peterbui.myproject.domain.dto.ReqCreateUser;
+import vn.peterbui.myproject.domain.dto.ReqLoginDTO;
 import vn.peterbui.myproject.domain.dto.ResLoginDTO;
-import vn.peterbui.myproject.domain.dto.UserDTO;
+import vn.peterbui.myproject.domain.dto.ResUserDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.service.UserService;
 
@@ -42,12 +42,12 @@ public class AuthController {
     private long refreshTokenExpiration;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO)
+    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO reqLoginDTO)
             throws MethodArgumentNotValidException {
 
         // Nạp input gồm username, password vào Security
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginDTO.getUsername(), loginDTO.getPassword());
+                reqLoginDTO.getUsername(), reqLoginDTO.getPassword());
 
         // xác thực người dùng => cần viết hàm loadByUserName()
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -56,7 +56,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         ResLoginDTO resLoginDTO = new ResLoginDTO();
-        User currentUserDB = this.userService.handleGetUserByUserName(loginDTO.getUsername());
+        User currentUserDB = this.userService.handleGetUserByUserName(reqLoginDTO.getUsername());
         if (currentUserDB != null) {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
                     currentUserDB.getFullName());
@@ -68,10 +68,10 @@ public class AuthController {
         resLoginDTO.setAccessToken(accessToken);
 
         // create refresh token
-        String refreshToken = this.securityUtil.createRefreshToken(loginDTO.getUsername(), resLoginDTO);
+        String refreshToken = this.securityUtil.createRefreshToken(reqLoginDTO.getUsername(), resLoginDTO);
 
         // update user
-        this.userService.updateUserToken(refreshToken, loginDTO.getUsername());
+        this.userService.updateUserToken(refreshToken, reqLoginDTO.getUsername());
 
         // set cookie
         ResponseCookie responseCookie = ResponseCookie
@@ -171,13 +171,13 @@ public class AuthController {
     
     @PostMapping("/auth/register")
     @ApiMessage("Register a new user")
-    public ResponseEntity<UserDTO> register (@Valid @RequestBody CreateUserRequest createUserRequest){
-        boolean checkEmailRegister = this.userService.checkEmailExists(createUserRequest.getEmail());
+    public ResponseEntity<ResUserDTO> register (@Valid @RequestBody ReqCreateUser reqCreateUser){
+        boolean checkEmailRegister = this.userService.checkEmailExists(reqCreateUser.getEmail());
         if(checkEmailRegister){
-            throw new IdInvalidException("Email " + createUserRequest.getEmail() + " already exists");
+            throw new IdInvalidException("Email " + reqCreateUser.getEmail() + " already exists");
         }
 
-        UserDTO userDTO = this.convertUtils.convertToDto(this.userService.handleCreateUser(createUserRequest));
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+        ResUserDTO resUserDTO = this.convertUtils.convertToDto(this.userService.handleCreateUser(reqCreateUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resUserDTO);
     }
 }

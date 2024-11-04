@@ -18,9 +18,9 @@ import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.ApiResponse;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.CreateUserRequest;
+import vn.peterbui.myproject.domain.dto.ReqCreateUser;
 import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
-import vn.peterbui.myproject.domain.dto.UserDTO;
+import vn.peterbui.myproject.domain.dto.ResUserDTO;
 import vn.peterbui.myproject.service.UserService;
 
 @RestController
@@ -41,21 +41,21 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable long id) {
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable long id) {
         User user = this.userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(convertUtils.convertToDto(user));
     }
 
     @PostMapping("/users/create")
-    public ResponseEntity<UserDTO> handleCreateUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        UserDTO userDTO = convertUtils.convertToDto(this.userService.handleCreateUser(createUserRequest));
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+    public ResponseEntity<ResUserDTO> handleCreateUser(@RequestBody @Valid ReqCreateUser reqCreateUser) {
+        ResUserDTO resUserDTO = convertUtils.convertToDto(this.userService.handleCreateUser(reqCreateUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resUserDTO);
     }
 
     @PutMapping("/users/update")
-    public ResponseEntity<UserDTO> handeUpdateUser(@RequestBody User user) {
-        UserDTO userDTO = convertUtils.convertToDto(this.userService.handleUpdateUser(user));
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+    public ResponseEntity<ResUserDTO> handeUpdateUser(@RequestBody User user) {
+        ResUserDTO resUserDTO = convertUtils.convertToDto(this.userService.handleUpdateUser(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resUserDTO);
     }
 
     @DeleteMapping("/users/delete/{id}")

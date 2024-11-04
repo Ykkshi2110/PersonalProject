@@ -6,7 +6,7 @@ import vn.peterbui.myproject.type.GenderEnum;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class UserDTO {
+public class ResUserDTO {
     private long id;
     private String address;
     private String avatar;
@@ -14,5 +14,5 @@ public class UserDTO {
     private String fullName;
     private int age;
     private GenderEnum gender;
-    private RoleDTO role;
+    private ResRoleDTO role;
 }

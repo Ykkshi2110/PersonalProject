@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.Company;
-import vn.peterbui.myproject.domain.dto.CompanyDTO;
+import vn.peterbui.myproject.domain.dto.ResCompanyDTO;
 import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
 import vn.peterbui.myproject.service.CompanyService;
 
@@ -22,22 +22,22 @@ public class CompanyController {
     private final CompanyService companyService;
     private final ModelMapper modelMapper;
 
-    public CompanyDTO mapToDTO(Company company) {
-        return modelMapper.map(company, CompanyDTO.class);
+    public ResCompanyDTO mapToDTO(Company company) {
+        return modelMapper.map(company, ResCompanyDTO.class);
     }
 
     @PostMapping("/companies/create")
     @ApiMessage("Create a company")
-    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody Company company) {
-        CompanyDTO companyDTO = mapToDTO(this.companyService.handleCreateCompany(company));
-        return ResponseEntity.status(HttpStatus.CREATED).body(companyDTO);
+    public ResponseEntity<ResCompanyDTO> createCompany(@Valid @RequestBody Company company) {
+        ResCompanyDTO resCompanyDTO = mapToDTO(this.companyService.handleCreateCompany(company));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resCompanyDTO);
     }
 
     @PutMapping("/companies/update")
     @ApiMessage("Update a company")
-    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody Company company) {
-        CompanyDTO companyDTO = mapToDTO(this.companyService.handleUpdateCompany(company));
-        return ResponseEntity.status(HttpStatus.OK).body(companyDTO);
+    public ResponseEntity<ResCompanyDTO> updateCompany(@Valid @RequestBody Company company) {
+        ResCompanyDTO resCompanyDTO = mapToDTO(this.companyService.handleUpdateCompany(company));
+        return ResponseEntity.status(HttpStatus.OK).body(resCompanyDTO);
     }
 
     @DeleteMapping("/companies/delete/{id}")
@@ -55,8 +55,8 @@ public class CompanyController {
 
     @GetMapping("/companies/{id}")
     @ApiMessage("Fetch company by id")
-    public ResponseEntity<CompanyDTO> fetchCompanyById(@PathVariable Long id) {
-        CompanyDTO companyDTO = mapToDTO(this.companyService.getCompanyById(id));
-        return ResponseEntity.status(HttpStatus.OK).body(companyDTO);
+    public ResponseEntity<ResCompanyDTO> fetchCompanyById(@PathVariable Long id) {
+        ResCompanyDTO resCompanyDTO = mapToDTO(this.companyService.getCompanyById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(resCompanyDTO);
     }
 }

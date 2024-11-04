@@ -3,8 +3,8 @@ package vn.peterbui.myproject.convert;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.dto.RoleDTO;
-import vn.peterbui.myproject.domain.dto.UserDTO;
+import vn.peterbui.myproject.domain.dto.ResRoleDTO;
+import vn.peterbui.myproject.domain.dto.ResUserDTO;
 
 @Component
 public class ConvertUtils {
@@ -15,23 +15,23 @@ public class ConvertUtils {
         this.modelMapper = modelMapper;
     }
 
-    public UserDTO convertToDto(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setAddress(user.getAddress());
-        userDTO.setAvatar(user.getAvatar());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFullName(user.getFullName());
-        userDTO.setAge(user.getAge());
-        userDTO.setGender(user.getGender());
+    public ResUserDTO convertToDto(User user) {
+        ResUserDTO resUserDTO = new ResUserDTO();
+        resUserDTO.setId(user.getId());
+        resUserDTO.setAddress(user.getAddress());
+        resUserDTO.setAvatar(user.getAvatar());
+        resUserDTO.setEmail(user.getEmail());
+        resUserDTO.setFullName(user.getFullName());
+        resUserDTO.setAge(user.getAge());
+        resUserDTO.setGender(user.getGender());
         // Set roleDTO
         // Register người dùng không nhập Role vào 
         if (user.getRole() != null) {
-            RoleDTO roleDTO = new RoleDTO();
-            roleDTO.setId(user.getRole().getId());
-            roleDTO.setName(user.getRole().getName());
-            userDTO.setRole(roleDTO);
+            ResRoleDTO resRoleDTO = new ResRoleDTO();
+            resRoleDTO.setId(user.getRole().getId());
+            resRoleDTO.setName(user.getRole().getName());
+            resUserDTO.setRole(resRoleDTO);
         }
-        return userDTO;
+        return resUserDTO;
     }
 }

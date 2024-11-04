@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class CompanyDTO {
+public class ResCompanyDTO {
     private String name;
     private String description;
     private String address;

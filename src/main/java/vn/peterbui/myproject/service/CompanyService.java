@@ -9,8 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.peterbui.myproject.domain.Company;
-import vn.peterbui.myproject.domain.Meta;
-import vn.peterbui.myproject.domain.dto.CompanyDTO;
+import vn.peterbui.myproject.domain.dto.Meta;
+import vn.peterbui.myproject.domain.dto.ResCompanyDTO;
 import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.repository.CompanyRepository;
@@ -56,7 +56,7 @@ public class CompanyService {
 
     public ResultPaginationDTO getAllCompanies(Specification<Company>spec, Pageable pageable) {
         Page<Company> pageCompanies = this.companyRepository.findAll(spec, pageable);
-        Page<CompanyDTO> pageCompanyDTOs = pageCompanies.map(element -> modelMapper.map(element, CompanyDTO.class));
+        Page<ResCompanyDTO> pageCompanyDTOs = pageCompanies.map(element -> modelMapper.map(element, ResCompanyDTO.class));
 
         Meta meta = new Meta();
         meta.setPage(pageable.getPageNumber() + 1);

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import vn.peterbui.myproject.domain.Meta;
+import vn.peterbui.myproject.domain.dto.Meta;
 import vn.peterbui.myproject.domain.Permission;
 import vn.peterbui.myproject.domain.dto.ResultPaginationDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;

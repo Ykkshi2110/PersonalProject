@@ -10,7 +10,7 @@ import vn.peterbui.myproject.type.GenderEnum;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CreateUserRequest {
+public class ReqCreateUser {
     @NotNull
     private String address;
     private String avatar;
