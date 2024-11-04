@@ -2,6 +2,7 @@ package vn.peterbui.myproject.domain.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import vn.peterbui.myproject.type.GenderEnum;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -11,6 +12,7 @@ public class UserDTO {
     private String avatar;
     private String email;
     private String fullName;
-    private String phone;
+    private int age;
+    private GenderEnum gender;
     private RoleDTO role;
 }

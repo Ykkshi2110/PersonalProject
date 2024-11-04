@@ -55,8 +55,8 @@ public class UserService {
         user.setEmail(createUserRequest.getEmail());
         user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
         user.setFullName(createUserRequest.getFullName());
-        user.setPhone(createUserRequest.getPhone());
-
+        user.setAge(createUserRequest.getAge());
+        user.setGender(createUserRequest.getGender());
         // check Role by id 
         if(createUserRequest.getRole() != null){
             Role reqRole = this.roleRepository.findById(createUserRequest.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
@@ -71,8 +71,8 @@ public class UserService {
                 .orElseThrow(() -> new UserDoesNotExist("USER DOESN'T EXIST WITH ID = " + user.getId()));
         currentUser.setAddress(user.getAddress());
         currentUser.setFullName(user.getFullName());
-        currentUser.setPhone(user.getPhone());
-
+        currentUser.setAge(user.getAge());
+        currentUser.setGender(user.getGender());
         // check role by id 
         Role reqRole = this.roleRepository.findById(user.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
         currentUser.setRole(reqRole);

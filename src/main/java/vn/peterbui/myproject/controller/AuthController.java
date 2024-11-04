@@ -60,7 +60,7 @@ public class AuthController {
         if (currentUserDB != null) {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
                     currentUserDB.getFullName());
-            resLoginDTO.setUserLogin(userLogin);
+            resLoginDTO.setUser(userLogin);
         }
 
         // create token
@@ -123,7 +123,7 @@ public class AuthController {
         if (currentUserDB != null) {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
                     currentUserDB.getFullName());
-            resLoginDTO.setUserLogin(userLogin);
+            resLoginDTO.setUser(userLogin);
         }
 
         // create token

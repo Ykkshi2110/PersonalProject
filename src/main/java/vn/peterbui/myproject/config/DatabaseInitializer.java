@@ -15,6 +15,7 @@ import vn.peterbui.myproject.domain.User;
 import vn.peterbui.myproject.repository.PermissionRepository;
 import vn.peterbui.myproject.repository.RoleRepository;
 import vn.peterbui.myproject.repository.UserRepository;
+import vn.peterbui.myproject.type.GenderEnum;
 
 @Component
 @RequiredArgsConstructor
@@ -72,7 +73,8 @@ public class DatabaseInitializer implements CommandLineRunner {
             user.setEmail("PeterBui@gmail.com");
             user.setAddress("179/58/16 Lê Đình Thám");
             user.setFullName("Peter Bùi Đz number1");
-            user.setPhone("0394494821");
+            user.setAge(20);
+            user.setGender(GenderEnum.MALE);
             user.setPassword(passwordEncoder.encode("Buianhquoc2110@"));
             user.setRole(adminRole);
             this.userRepository.save(user);

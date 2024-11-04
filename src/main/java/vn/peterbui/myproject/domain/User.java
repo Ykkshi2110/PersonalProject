@@ -2,21 +2,13 @@ package vn.peterbui.myproject.domain;
 
 import java.time.Instant;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import vn.peterbui.myproject.convert.SecurityUtil;
+import vn.peterbui.myproject.type.GenderEnum;
 
 @Entity
 @Getter
@@ -39,7 +31,11 @@ public class User{
     @NotNull
     @Size(min = 6, message = "Password must be at least 6 character")
     private String password;
-    private String phone;
+
+    private int age;
+
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
 
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;

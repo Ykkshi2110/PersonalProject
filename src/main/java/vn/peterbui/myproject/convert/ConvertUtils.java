@@ -22,8 +22,8 @@ public class ConvertUtils {
         userDTO.setAvatar(user.getAvatar());
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getFullName());
-        userDTO.setPhone(user.getPhone());
-
+        userDTO.setAge(user.getAge());
+        userDTO.setGender(user.getGender());
         // Set roleDTO
         // Register người dùng không nhập Role vào 
         if (user.getRole() != null) {

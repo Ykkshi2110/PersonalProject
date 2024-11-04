@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import vn.peterbui.myproject.domain.Role;
+import vn.peterbui.myproject.type.GenderEnum;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,7 +23,8 @@ public class CreateUserRequest {
     @NotNull
     @Size(min = 6, message = "Password must be at least 6 character")
     private String password;
-    private String phone;
+    private int age;
+    private GenderEnum gender;
 
     private Role role;
    
