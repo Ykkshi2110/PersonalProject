@@ -1,4 +1,4 @@
-package vn.peterbui.myproject.domain;
+package vn.peterbui.myproject.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
