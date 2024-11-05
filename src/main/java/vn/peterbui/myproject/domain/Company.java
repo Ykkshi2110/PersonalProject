@@ -1,5 +1,6 @@
 package vn.peterbui.myproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import vn.peterbui.myproject.convert.SecurityUtil;
 
 import java.time.Instant;
+import java.util.List;
 
 @Table(name = "companies")
 @Entity
@@ -27,6 +29,10 @@ public class Company {
 
     private String address;
     private String logo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    private List<User> users;
 
     private Instant createdAt;
     private Instant updateAt;

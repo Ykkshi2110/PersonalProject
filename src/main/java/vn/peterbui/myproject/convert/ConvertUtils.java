@@ -19,9 +19,8 @@ public class ConvertUtils {
         ResUserDTO resUserDTO = new ResUserDTO();
         resUserDTO.setId(user.getId());
         resUserDTO.setAddress(user.getAddress());
-        resUserDTO.setAvatar(user.getAvatar());
         resUserDTO.setEmail(user.getEmail());
-        resUserDTO.setFullName(user.getFullName());
+        resUserDTO.setName(user.getName());
         resUserDTO.setAge(user.getAge());
         resUserDTO.setGender(user.getGender());
         // Set roleDTO

@@ -9,11 +9,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.peterbui.myproject.domain.Company;
+import vn.peterbui.myproject.domain.User;
 import vn.peterbui.myproject.domain.response.Meta;
 import vn.peterbui.myproject.domain.response.ResCompanyDTO;
 import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.repository.CompanyRepository;
+import vn.peterbui.myproject.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -21,6 +25,8 @@ import vn.peterbui.myproject.repository.CompanyRepository;
 public class CompanyService {
     private final CompanyRepository companyRepository;
     private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
+
     private static final String ERROR_COMPANY = "Company doesn't exist";
 
     public Company handleCreateCompany(@Valid Company reqCompany) {
@@ -50,22 +56,23 @@ public class CompanyService {
         if (currentCompany == null) {
             throw new IdInvalidException(ERROR_COMPANY);
         } else {
+            List<User> users = currentCompany.getUsers();
+            this.userRepository.deleteAll(users);
             this.companyRepository.deleteById(id);
         }
     }
 
     public ResultPaginationDTO getAllCompanies(Specification<Company>spec, Pageable pageable) {
         Page<Company> pageCompanies = this.companyRepository.findAll(spec, pageable);
-        Page<ResCompanyDTO> pageCompanyDTOs = pageCompanies.map(element -> modelMapper.map(element, ResCompanyDTO.class));
 
         Meta meta = new Meta();
         meta.setPage(pageable.getPageNumber() + 1);
         meta.setPageSize(pageable.getPageSize());
-        meta.setPages(pageCompanyDTOs.getTotalPages());
-        meta.setTotal(pageCompanyDTOs.getTotalElements());
+        meta.setPages(pageCompanies.getTotalPages());
+        meta.setTotal(pageCompanies.getTotalElements());
         ResultPaginationDTO paginationDTO = new ResultPaginationDTO();
         paginationDTO.setMeta(meta);
-        paginationDTO.setResult(pageCompanyDTOs.getContent());
+        paginationDTO.setResult(pageCompanies.getContent());
         return paginationDTO;
     }
 

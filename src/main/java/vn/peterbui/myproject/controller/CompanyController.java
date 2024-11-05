@@ -20,24 +20,18 @@ import vn.peterbui.myproject.service.CompanyService;
 @RequiredArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
-    private final ModelMapper modelMapper;
 
-    public ResCompanyDTO mapToDTO(Company company) {
-        return modelMapper.map(company, ResCompanyDTO.class);
-    }
 
     @PostMapping("/companies/create")
     @ApiMessage("Create a company")
-    public ResponseEntity<ResCompanyDTO> createCompany(@Valid @RequestBody Company company) {
-        ResCompanyDTO resCompanyDTO = mapToDTO(this.companyService.handleCreateCompany(company));
-        return ResponseEntity.status(HttpStatus.CREATED).body(resCompanyDTO);
+    public ResponseEntity<Company> createCompany(@Valid @RequestBody Company company) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.companyService.handleCreateCompany(company));
     }
 
     @PutMapping("/companies/update")
     @ApiMessage("Update a company")
-    public ResponseEntity<ResCompanyDTO> updateCompany(@Valid @RequestBody Company company) {
-        ResCompanyDTO resCompanyDTO = mapToDTO(this.companyService.handleUpdateCompany(company));
-        return ResponseEntity.status(HttpStatus.OK).body(resCompanyDTO);
+    public ResponseEntity<Company> updateCompany(@Valid @RequestBody Company company) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.companyService.handleUpdateCompany(company));
     }
 
     @DeleteMapping("/companies/delete/{id}")
@@ -55,8 +49,7 @@ public class CompanyController {
 
     @GetMapping("/companies/{id}")
     @ApiMessage("Fetch company by id")
-    public ResponseEntity<ResCompanyDTO> fetchCompanyById(@PathVariable Long id) {
-        ResCompanyDTO resCompanyDTO = mapToDTO(this.companyService.getCompanyById(id));
-        return ResponseEntity.status(HttpStatus.OK).body(resCompanyDTO);
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.companyService.getCompanyById(id));
     }
 }

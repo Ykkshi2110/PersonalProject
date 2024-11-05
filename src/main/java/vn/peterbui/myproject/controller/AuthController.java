@@ -23,7 +23,6 @@ import vn.peterbui.myproject.convert.ConvertUtils;
 import vn.peterbui.myproject.convert.SecurityUtil;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.request.ReqCreateUser;
 import vn.peterbui.myproject.domain.request.ReqLoginDTO;
 import vn.peterbui.myproject.domain.response.ResLoginDTO;
 import vn.peterbui.myproject.domain.response.ResUserDTO;
@@ -59,7 +58,7 @@ public class AuthController {
         User currentUserDB = this.userService.handleGetUserByUserName(reqLoginDTO.getUsername());
         if (currentUserDB != null) {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
-                    currentUserDB.getFullName());
+                    currentUserDB.getName());
             resLoginDTO.setUser(userLogin);
         }
 
@@ -96,7 +95,7 @@ public class AuthController {
         if (currentUserDB != null) {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
-            userLogin.setName(currentUserDB.getFullName());
+            userLogin.setName(currentUserDB.getName());
             userGetAccount.setUser(userLogin);
         }
 
@@ -122,7 +121,7 @@ public class AuthController {
         User currentUserDB = this.userService.handleGetUserByUserName(email);
         if (currentUserDB != null) {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
-                    currentUserDB.getFullName());
+                    currentUserDB.getName());
             resLoginDTO.setUser(userLogin);
         }
 
@@ -171,7 +170,7 @@ public class AuthController {
     
     @PostMapping("/auth/register")
     @ApiMessage("Register a new user")
-    public ResponseEntity<ResUserDTO> register (@Valid @RequestBody ReqCreateUser reqCreateUser){
+    public ResponseEntity<ResUserDTO> register (@Valid @RequestBody User reqCreateUser){
         boolean checkEmailRegister = this.userService.checkEmailExists(reqCreateUser.getEmail());
         if(checkEmailRegister){
             throw new IdInvalidException("Email " + reqCreateUser.getEmail() + " already exists");

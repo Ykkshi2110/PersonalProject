@@ -1,28 +1,27 @@
 package vn.peterbui.myproject.domain.response;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import vn.peterbui.myproject.domain.Role;
 import vn.peterbui.myproject.type.GenderEnum;
 
 import java.time.Instant;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ResUserDTO {
-    private long id;
+public class ResCreateUserDTO {
+    private String address;
     private String email;
     private String name;
-    private GenderEnum gender;
-    private String address;
     private int age;
-    private Instant updatedAt;
+    private GenderEnum gender;
     private Instant createdAt;
     private CompanyUser company;
-    private ResRoleDTO role;
 
     @Getter
     @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
     public static class CompanyUser {
         private long id;
         private String name;

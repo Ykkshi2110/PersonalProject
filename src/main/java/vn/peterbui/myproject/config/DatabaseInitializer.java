@@ -72,7 +72,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             User user = new User();
             user.setEmail("PeterBui@gmail.com");
             user.setAddress("179/58/16 Lê Đình Thám");
-            user.setFullName("Peter Bùi Đz number1");
+            user.setName("Peter Bùi Đz number1");
             user.setAge(20);
             user.setGender(GenderEnum.MALE);
             user.setPassword(passwordEncoder.encode("Buianhquoc2110@"));

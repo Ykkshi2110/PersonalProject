@@ -1,35 +1,46 @@
 package vn.peterbui.myproject.service;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import vn.peterbui.myproject.convert.ConvertUtils;
-import vn.peterbui.myproject.domain.response.Meta;
+import vn.peterbui.myproject.domain.Company;
 import vn.peterbui.myproject.domain.Role;
 import vn.peterbui.myproject.domain.User;
-import vn.peterbui.myproject.domain.request.ReqCreateUser;
-import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
+import vn.peterbui.myproject.domain.response.Meta;
 import vn.peterbui.myproject.domain.response.ResUserDTO;
+import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
 import vn.peterbui.myproject.exception.UserDoesNotExist;
 import vn.peterbui.myproject.exception.UserExistedException;
+import vn.peterbui.myproject.repository.CompanyRepository;
 import vn.peterbui.myproject.repository.RoleRepository;
 import vn.peterbui.myproject.repository.UserRepository;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConvertUtils convertUtils;
     private final RoleRepository roleRepository;
+    private final CompanyRepository companyRepository;
+    private final ModelMapper modelMapper;
+
+    public ResUserDTO convertToResUserDTO(User user) {
+        return modelMapper.map(user, ResUserDTO.class);
+    }
 
     public ResultPaginationDTO getAllUser(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = this.userRepository.findAll(spec, pageable);
-        Page<ResUserDTO> pageUserDTOs = pageUsers.map(convertUtils::convertToDto);
+        Page<ResUserDTO> pageUserDTOs = pageUsers.map(this::convertToResUserDTO);
         Meta meta = new Meta();
         meta.setPage(pageable.getPageNumber()+1);
         meta.setPageSize(pageable.getPageSize());
@@ -47,39 +58,49 @@ public class UserService {
                 .orElseThrow(() -> new UserDoesNotExist("USER DOESN'T EXIST WITH ID = " + id));
     }
 
-    public User handleCreateUser(@Valid ReqCreateUser reqCreateUser) {
-        User user = new User();
+    public User handleCreateUser(@Valid User reqCreateUser) {
         if(this.userRepository.existsByEmail(reqCreateUser.getEmail())) throw new UserExistedException("USER EXISTED!");
-        user.setAddress(reqCreateUser.getAddress());
-        user.setAvatar(reqCreateUser.getAvatar());
-        user.setEmail(reqCreateUser.getEmail());
-        user.setPassword(passwordEncoder.encode(reqCreateUser.getPassword()));
-        user.setFullName(reqCreateUser.getFullName());
-        user.setAge(reqCreateUser.getAge());
-        user.setGender(reqCreateUser.getGender());
+        reqCreateUser.setPassword(passwordEncoder.encode(reqCreateUser.getPassword()));
+
+        // check Company by id
+        if(reqCreateUser.getCompany() != null){
+            Company reqCompany = this.companyRepository.findById(reqCreateUser
+                    .getCompany()
+                    .getId()).orElseThrow(() -> new IdInvalidException("Company doesn't exists"));
+            reqCreateUser.setCompany(reqCompany);
+        }
         // check Role by id 
         if(reqCreateUser.getRole() != null){
             Role reqRole = this.roleRepository.findById(reqCreateUser
                     .getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
-            user.setRole(reqRole);
+            reqCreateUser.setRole(reqRole);
         }
-        
-        return this.userRepository.save(user);
+
+        return this.userRepository.save(reqCreateUser);
     }
 
     public User handleUpdateUser(User user) {
         User currentUser = this.userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserDoesNotExist("USER DOESN'T EXIST WITH ID = " + user.getId()));
         currentUser.setAddress(user.getAddress());
-        currentUser.setFullName(user.getFullName());
+        currentUser.setName(user.getName());
         currentUser.setAge(user.getAge());
         currentUser.setGender(user.getGender());
-        // check role by id 
-        Role reqRole = this.roleRepository.findById(user.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
-        currentUser.setRole(reqRole);
+        // check role by id
+        if(user.getRole() != null){
+            Role reqRole = this.roleRepository.findById(user.getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+            currentUser.setRole(reqRole);
+        }
+
+        // check company by id
+        if(user.getCompany() != null){
+            Company reqCompany = this.companyRepository.findById(user.getCompany().getId()).orElseThrow(() -> new IdInvalidException("Company doesn't exists"));
+            currentUser.setCompany(reqCompany);
+        }
 
         return this.userRepository.save(currentUser);
     }
+
 
     public void handleDeleteUser(long id) {
         User currentUser = this.userRepository.findById(id).orElse(null);

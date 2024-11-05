@@ -21,12 +21,11 @@ public class User{
     
     @NotNull
     private String address;
-    private String avatar;
 
     @NotNull
     @Email(message = "Invalid Email", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
-    private String fullName;
+    private String name;
 
     @NotNull
     @Size(min = 6, message = "Password must be at least 6 character")
@@ -37,13 +36,18 @@ public class User{
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
 
+    private Instant updatedAt;
+    private Instant createdAt;
+    private String createdBy;
+    private String updatedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
 
-    private Instant createdAt;
-    private Instant updateAt;
-    private String createdBy;
-    private String updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -58,7 +62,7 @@ public class User{
      @PreUpdate
     public void handleBeforeUpdate(){
         this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
 }
