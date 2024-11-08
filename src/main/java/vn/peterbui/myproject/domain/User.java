@@ -1,6 +1,7 @@
 package vn.peterbui.myproject.domain;
 
 import java.time.Instant;
+import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -52,6 +53,10 @@ public class User{
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Resume> resumes;
+
 
      @PrePersist
     public void handleBeforeCreate() {

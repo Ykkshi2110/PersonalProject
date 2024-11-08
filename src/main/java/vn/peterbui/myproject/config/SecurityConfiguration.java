@@ -40,12 +40,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+        String[] whiteList = {"/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html","/storage/**", "/api/v1/companies/**", "/api/v1/jobs/**"};
         httpSecurity
                 .csrf(c -> c.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html","/storage/**" ).permitAll()
+                                .requestMatchers(whiteList).permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
