@@ -77,4 +77,13 @@ public class GlobalExceptionHandler {
         res.setError("Internal Server Error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
     }
+
+    @ExceptionHandler(value = {StorageException.class})
+    public ResponseEntity<ApiResponse<Object>> handleNoResourceFoundException(StorageException e) {
+        ApiResponse<Object> res = new ApiResponse<>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setMessage(e.getMessage());
+        res.setError("Exception upload file occurs...");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
 }
