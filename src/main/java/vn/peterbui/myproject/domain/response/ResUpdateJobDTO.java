@@ -8,20 +8,17 @@ import java.time.Instant;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class ResJobDTO {
+@EqualsAndHashCode(callSuper=false)
+public class ResUpdateJobDTO {
     private String name;
     private String location;
     private double salary;
     private int quantity;
     private LevelEnum level;
-    private String description;
     private Instant startDate;
     private Instant endDate;
     private boolean active;
     private List<String> skills;
-    private Instant createdAt;
-    private Instant updateAdt;
-    private String createdBy;
+    private Instant updatedAt;
     private String updatedBy;
 }

@@ -1,11 +1,14 @@
 package vn.peterbui.myproject.config;
 
+import org.modelmapper.Condition;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import vn.peterbui.myproject.domain.Company;
+import vn.peterbui.myproject.domain.Resume;
 import vn.peterbui.myproject.domain.response.ResCreateUserDTO;
+import vn.peterbui.myproject.domain.response.ResResumeDTO;
 import vn.peterbui.myproject.domain.response.ResUpdateUserDTO;
 import vn.peterbui.myproject.domain.response.ResUserDTO;
 
@@ -35,6 +38,13 @@ public class ModelMapperConfig {
         createUserDtoTypeMap.addMappings(mapper -> {
             mapper.map(Company::getId, ResCreateUserDTO.CompanyUser::setId);
             mapper.map(Company::getName, ResCreateUserDTO.CompanyUser::setName);
+        });
+
+        Condition<Resume, String> jobNotNullCondition = context -> context.getSource().getJob() != null;
+        TypeMap<Resume, ResResumeDTO> resResumeDtoTypeMap = modelMapper.createTypeMap(Resume.class, ResResumeDTO.class);
+        resResumeDtoTypeMap.addMappings(mapper -> {
+            mapper.when(jobNotNullCondition)
+                    .map(src -> src.getJob().getCompany().getName(), ResResumeDTO::setCompanyName);
         });
 
         return modelMapper;

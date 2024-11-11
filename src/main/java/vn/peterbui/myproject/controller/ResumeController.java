@@ -24,19 +24,19 @@ public class ResumeController {
     private final ResumeService resumeService;
     private final ModelMapper modelMapper;
 
-    @PostMapping("/resumes/create")
+    @PostMapping("/resumes")
     @ApiMessage("Create a resume")
     public ResponseEntity<ResCreateResumeDTO> createResume(@Valid @RequestBody Resume reqResume) {
         return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(this.resumeService.handleCreateResume(reqResume), ResCreateResumeDTO.class));
     }
 
-    @PutMapping("/resumes/update")
+    @PutMapping("/resumes")
     @ApiMessage("Update a resume")
     public ResponseEntity<ResUpdateResumeDTO> updateResume(@RequestBody Resume reqResume) {
         return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(this.resumeService.handleUpdateResume(reqResume), ResUpdateResumeDTO.class));
     }
 
-    @DeleteMapping("/resumes/delete/{id}")
+    @DeleteMapping("/resumes/{id}")
     @ApiMessage("Delete a resume")
     public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
         this.resumeService.handleDeleteResume(id);

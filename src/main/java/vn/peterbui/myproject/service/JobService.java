@@ -7,16 +7,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import vn.peterbui.myproject.domain.Company;
 import vn.peterbui.myproject.domain.Job;
 import vn.peterbui.myproject.domain.Skill;
 import vn.peterbui.myproject.domain.response.Meta;
-import vn.peterbui.myproject.domain.response.ResJobDTO;
+import vn.peterbui.myproject.domain.response.ResCreateJobDTO;
+import vn.peterbui.myproject.domain.response.ResUpdateJobDTO;
 import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
 import vn.peterbui.myproject.exception.IdInvalidException;
+import vn.peterbui.myproject.repository.CompanyRepository;
 import vn.peterbui.myproject.repository.JobRepository;
 import vn.peterbui.myproject.repository.SkillRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,20 +28,32 @@ public class JobService {
     private final JobRepository jobRepository;
     private final SkillRepository skillRepository;
     private final ModelMapper modelMapper;
+    private final CompanyRepository companyRepository;
     private static final String ERROR_JOB = "Job doesn't exist";
 
-    public ResJobDTO convertJobToDTO(Job job) {
-        ResJobDTO resJobDTO = modelMapper.map(job, ResJobDTO.class);
+    public ResCreateJobDTO convertCreateJobToDTO(Job job) {
+        ResCreateJobDTO resCreateJobDTO = modelMapper.map(job, ResCreateJobDTO.class);
         List<String> skills = job
                 .getSkills()
                 .stream()
                 .map(Skill::getName)
                 .toList();
-        resJobDTO.setSkills(skills);
-        return resJobDTO;
+        resCreateJobDTO.setSkills(skills);
+        return resCreateJobDTO;
     }
 
-    public ResJobDTO handleCreateJob(@Valid Job reqJob) {
+    public ResUpdateJobDTO convertUpdateJobToDTO(Job job) {
+        ResUpdateJobDTO resUpdateJobDTO = modelMapper.map(job, ResUpdateJobDTO.class);
+        List<String> skills = job
+                .getSkills()
+                .stream()
+                .map(Skill::getName)
+                .toList();
+        resUpdateJobDTO.setSkills(skills);
+        return resUpdateJobDTO;
+    }
+
+    public ResCreateJobDTO handleCreateJob(@Valid Job reqJob) {
         // check List skill
         if (reqJob.getSkills() != null) {
             List<Long> idSkills = reqJob
@@ -50,10 +66,10 @@ public class JobService {
         }
         this.jobRepository.save(reqJob);
 
-        return this.convertJobToDTO(reqJob);
+        return this.convertCreateJobToDTO(reqJob);
     }
 
-    public ResJobDTO handleUpdateJob(@Valid Job reqJob) {
+    public ResUpdateJobDTO handleUpdateJob(Job reqJob, Job jobInDB) {
         Job currentJob = this.jobRepository
                 .findById(reqJob.getId())
                 .orElseThrow(() -> new IdInvalidException(ERROR_JOB));
@@ -65,21 +81,26 @@ public class JobService {
                     .map(Skill::getId)
                     .toList();
             List<Skill> skills = this.skillRepository.findAllById(idSkills);
-            currentJob.setSkills(skills);
+            jobInDB.setSkills(skills);
         }
 
-        currentJob.setDescription(reqJob.getDescription());
-        currentJob.setActive(reqJob.isActive());
-        currentJob.setName(reqJob.getName());
-        currentJob.setLevel(reqJob.getLevel());
-        currentJob.setQuantity(reqJob.getQuantity());
-        currentJob.setLocation(reqJob.getLocation());
-        currentJob.setSalary(reqJob.getSalary());
-        currentJob.setStartDate(reqJob.getStartDate());
-        currentJob.setEndDate(reqJob.getEndDate());
+        // check Company
+        if(reqJob.getCompany() != null){
+            Optional<Company> company = this.companyRepository.findById(reqJob.getCompany().getId());
+            company.ifPresent(jobInDB::setCompany);
+        }
+
+        jobInDB.setActive(reqJob.isActive());
+        jobInDB.setName(reqJob.getName());
+        jobInDB.setLevel(reqJob.getLevel());
+        jobInDB.setQuantity(reqJob.getQuantity());
+        jobInDB.setLocation(reqJob.getLocation());
+        jobInDB.setSalary(reqJob.getSalary());
+        jobInDB.setStartDate(reqJob.getStartDate());
+        jobInDB.setEndDate(reqJob.getEndDate());
         this.jobRepository.save(currentJob);
 
-        return this.convertJobToDTO(currentJob);
+        return this.convertUpdateJobToDTO(currentJob);
     }
 
     public void handleDeleteJob(long id) {

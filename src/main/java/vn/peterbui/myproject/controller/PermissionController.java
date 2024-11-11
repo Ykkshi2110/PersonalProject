@@ -28,13 +28,13 @@ import vn.peterbui.myproject.service.PermissionService;
 public class PermissionController {
     public final PermissionService permissionService;
 
-    @PostMapping("/permissions/create")
+    @PostMapping("/permissions")
     @ApiMessage("Create a permission")
     public ResponseEntity<Permission> handleCreatePermission(@RequestBody @Valid Permission permission){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.permissionService.handleCreatPermission(permission));
     }
 
-    @PutMapping("/permissions/update")
+    @PutMapping("/permissions")
     @ApiMessage("Update a permission")
     public ResponseEntity<Permission> handleUpdatePermission(@RequestBody Permission permission){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.permissionService.handleUpdatePermission(permission));
@@ -46,7 +46,7 @@ public class PermissionController {
         return ResponseEntity.status(HttpStatus.OK).body(this.permissionService.fetchAllPermision(spec, pageable));
     }
 
-    @DeleteMapping("/permissions/delete/{id}")
+    @DeleteMapping("/permissions/{id}")
     @ApiMessage("Delete a permission")
     public ResponseEntity<Void> handleDeletePermission(@PathVariable long id){
         this.permissionService.handleDeletePermission(id);

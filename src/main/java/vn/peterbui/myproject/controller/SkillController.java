@@ -19,19 +19,19 @@ import vn.peterbui.myproject.service.SkillService;
 public class SkillController {
     private final SkillService skillService;
 
-    @PostMapping("/skills/create")
+    @PostMapping("/skills")
     @ApiMessage("Create a skill")
     public ResponseEntity<Skill> createSkill(@Valid @RequestBody Skill reqSkill) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.skillService.handleCreateSkill(reqSkill));
     }
 
-    @PutMapping("/skills/update")
+    @PutMapping("/skills")
     @ApiMessage("Update a skill")
     public ResponseEntity<Skill> updateSkill(@Valid @RequestBody Skill reqSkill) {
         return ResponseEntity.status(HttpStatus.OK).body(this.skillService.handleUpdateSkill(reqSkill));
     }
 
-    @DeleteMapping("/skills/delete/{id}")
+    @DeleteMapping("/skills/{id}")
     @ApiMessage("Delete a skill")
     public ResponseEntity<Void> deleteSkill(@PathVariable long id) {
         this.skillService.handleDeleteSkill(id);

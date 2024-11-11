@@ -22,19 +22,19 @@ public class CompanyController {
     private final CompanyService companyService;
 
 
-    @PostMapping("/companies/create")
+    @PostMapping("/companies")
     @ApiMessage("Create a company")
     public ResponseEntity<Company> createCompany(@Valid @RequestBody Company company) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.companyService.handleCreateCompany(company));
     }
 
-    @PutMapping("/companies/update")
+    @PutMapping("/companies")
     @ApiMessage("Update a company")
     public ResponseEntity<Company> updateCompany(@Valid @RequestBody Company company) {
         return ResponseEntity.status(HttpStatus.OK).body(this.companyService.handleUpdateCompany(company));
     }
 
-    @DeleteMapping("/companies/delete/{id}")
+    @DeleteMapping("/companies/{id}")
     @ApiMessage("Delete a company")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         this.companyService.deleteCompany(id);

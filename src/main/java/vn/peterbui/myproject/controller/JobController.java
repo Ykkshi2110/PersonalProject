@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.peterbui.myproject.convert.annotation.ApiMessage;
 import vn.peterbui.myproject.domain.Job;
-import vn.peterbui.myproject.domain.response.ResJobDTO;
+import vn.peterbui.myproject.domain.response.ResCreateJobDTO;
+import vn.peterbui.myproject.domain.response.ResUpdateJobDTO;
 import vn.peterbui.myproject.domain.response.ResultPaginationDTO;
+import vn.peterbui.myproject.repository.JobRepository;
 import vn.peterbui.myproject.service.JobService;
 
 @RestController
@@ -20,19 +22,20 @@ import vn.peterbui.myproject.service.JobService;
 public class JobController {
     private final JobService jobService;
 
-    @PostMapping("/jobs/create")
+    @PostMapping("/jobs")
     @ApiMessage("Create a job")
-    public ResponseEntity<ResJobDTO> createJob(@Valid @RequestBody Job reqJob) {
+    public ResponseEntity<ResCreateJobDTO> createJob(@Valid @RequestBody Job reqJob) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.jobService.handleCreateJob(reqJob));
     }
 
-    @PutMapping("/jobs/update")
+    @PutMapping("/jobs")
     @ApiMessage("Update a job")
-    public ResponseEntity<ResJobDTO> updateJob(@Valid @RequestBody Job reqJob) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.jobService.handleUpdateJob(reqJob));
+    public ResponseEntity<ResUpdateJobDTO> updateJob(@RequestBody Job reqJob) {
+        Job currentJob = this.jobService.handleFetchJobById(reqJob.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(this.jobService.handleUpdateJob(reqJob, currentJob));
     }
 
-    @DeleteMapping("/jobs/delete/{id}")
+    @DeleteMapping("/jobs/{id}")
     @ApiMessage("Delete a job")
     public ResponseEntity<Void> deleteJob(@PathVariable long id) {
         this.jobService.handleDeleteJob(id);

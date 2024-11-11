@@ -26,7 +26,7 @@ import vn.peterbui.myproject.service.RoleService;
 public class RoleController {
     private final RoleService roleService;
 
-    @PostMapping("/roles/create")
+    @PostMapping("/roles")
     @ApiMessage("Create a role")
     public ResponseEntity<Role> handleCreateRole(@RequestBody @Valid Role role) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.handleCreateRole(role));
@@ -44,13 +44,13 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.OK).body(this.roleService.fetchRoleById(id));
     }
 
-    @PutMapping("/roles/update")
+    @PutMapping("/roles")
     @ApiMessage("Update a role")
     public ResponseEntity<Role> handleUpdateRole(@RequestBody Role role) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.handleUpdateRole(role));
     }
 
-    @DeleteMapping("/roles/delete/{id}")
+    @DeleteMapping("/roles/{id}")
     @ApiMessage("Delete a role")
     public ResponseEntity<Void> handleDeleteRole(@PathVariable long id) {
         this.roleService.handleDeleteRole(id);

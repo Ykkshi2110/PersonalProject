@@ -49,19 +49,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(this.convertToResUserDTO(user));
     }
 
-    @PostMapping("/users/create")
+    @PostMapping("/users")
     public ResponseEntity<ResCreateUserDTO> handleCreateUser(@RequestBody @Valid User reqCreateUser) {
         ResCreateUserDTO resCreateUserDTO = this.convertToResCreateUserDTO(userService.handleCreateUser(reqCreateUser));
         return ResponseEntity.status(HttpStatus.CREATED).body(resCreateUserDTO);
     }
 
-    @PutMapping("/users/update")
+    @PutMapping("/users")
     public ResponseEntity<ResUpdateUserDTO> handeUpdateUser(@RequestBody User user) {
         ResUpdateUserDTO resUpdateUserDTO = this.convertToResUpdateUserDTO(this.userService.handleUpdateUser(user));
         return ResponseEntity.status(HttpStatus.CREATED).body(resUpdateUserDTO);
     }
 
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<ApiResponse<Object>> handleDeleteUser(@PathVariable long id) {
         this.userService.handleDeleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
