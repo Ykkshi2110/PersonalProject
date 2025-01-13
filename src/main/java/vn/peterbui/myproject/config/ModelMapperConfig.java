@@ -39,14 +39,6 @@ public class ModelMapperConfig {
             mapper.map(Company::getId, ResCreateUserDTO.CompanyUser::setId);
             mapper.map(Company::getName, ResCreateUserDTO.CompanyUser::setName);
         });
-
-        Condition<Resume, String> jobNotNullCondition = context -> context.getSource().getJob() != null;
-        TypeMap<Resume, ResResumeDTO> resResumeDtoTypeMap = modelMapper.createTypeMap(Resume.class, ResResumeDTO.class);
-        resResumeDtoTypeMap.addMappings(mapper -> {
-            mapper.when(jobNotNullCondition)
-                    .map(src -> src.getJob().getCompany().getName(), ResResumeDTO::setCompanyName);
-        });
-
         return modelMapper;
     }
 }

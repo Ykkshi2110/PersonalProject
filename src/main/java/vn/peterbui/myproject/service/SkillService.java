@@ -49,6 +49,7 @@ public class SkillService {
     public void handleDeleteSkill(long id) {
         Skill currentSkill = this.skillRepository.findById(id).orElseThrow(() -> new IdInvalidException(ERROR_SKILL));
         currentSkill.getJobs().forEach(currentJob -> currentJob.getSkills().remove(currentSkill));
+        currentSkill.getSubscribers().forEach(currentSubscriber -> currentSubscriber.getSkills().remove(currentSkill));
         this.skillRepository.delete(currentSkill);
     }
 }

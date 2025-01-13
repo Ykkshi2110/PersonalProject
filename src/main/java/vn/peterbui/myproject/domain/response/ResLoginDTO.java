@@ -8,6 +8,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.peterbui.myproject.domain.Permission;
+import vn.peterbui.myproject.domain.Role;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,6 +29,7 @@ public class ResLoginDTO {
         private long id;
         private String email;
         private String name;
+        private Role role;
     }
 
     // Trả về khi Get Account

@@ -57,8 +57,7 @@ public class AuthController {
         ResLoginDTO resLoginDTO = new ResLoginDTO();
         User currentUserDB = this.userService.handleGetUserByUserName(reqLoginDTO.getUsername());
         if (currentUserDB != null) {
-            ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
-                    currentUserDB.getName());
+            ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(), currentUserDB.getName(), currentUserDB.getRole());
             resLoginDTO.setUser(userLogin);
         }
 
@@ -96,6 +95,7 @@ public class AuthController {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
+            userLogin.setRole(currentUserDB.getRole());
             userGetAccount.setUser(userLogin);
         }
 
@@ -121,7 +121,7 @@ public class AuthController {
         User currentUserDB = this.userService.handleGetUserByUserName(email);
         if (currentUserDB != null) {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUserDB.getId(), currentUserDB.getEmail(),
-                    currentUserDB.getName());
+                    currentUserDB.getName(), currentUserDB.getRole());
             resLoginDTO.setUser(userLogin);
         }
 

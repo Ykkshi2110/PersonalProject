@@ -41,7 +41,7 @@ public class Permission {
     private String module;
 
     private Instant createdAt;
-    private Instant updateAt;
+    private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
 
@@ -65,7 +65,7 @@ public class Permission {
     @PreUpdate
     public void handleBeforeUpdate(){
         this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
 }

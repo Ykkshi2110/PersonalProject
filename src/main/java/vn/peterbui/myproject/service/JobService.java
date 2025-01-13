@@ -64,6 +64,13 @@ public class JobService {
             List<Skill> skills = this.skillRepository.findAllById(idSkills);
             reqJob.setSkills(skills);
         }
+
+        // check Company
+        if(reqJob.getCompany() != null){
+            Optional<Company> company = this.companyRepository.findById(reqJob.getCompany().getId());
+            company.ifPresent(reqJob::setCompany);
+        }
+
         this.jobRepository.save(reqJob);
 
         return this.convertCreateJobToDTO(reqJob);

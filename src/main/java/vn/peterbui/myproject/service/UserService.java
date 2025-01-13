@@ -66,13 +66,13 @@ public class UserService {
         if(reqCreateUser.getCompany() != null){
             Company reqCompany = this.companyRepository.findById(reqCreateUser
                     .getCompany()
-                    .getId()).orElseThrow(() -> new IdInvalidException("Company doesn't exists"));
+                    .getId()).orElseThrow(null);
             reqCreateUser.setCompany(reqCompany);
         }
         // check Role by id 
         if(reqCreateUser.getRole() != null){
             Role reqRole = this.roleRepository.findById(reqCreateUser
-                    .getRole().getId()).orElseThrow(() -> new IdInvalidException("Role does not exists"));
+                    .getRole().getId()).orElse(null);
             reqCreateUser.setRole(reqRole);
         }
 

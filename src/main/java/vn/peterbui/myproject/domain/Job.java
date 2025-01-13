@@ -1,5 +1,6 @@
 package vn.peterbui.myproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -35,7 +36,7 @@ public class Job {
     private Instant endDate;
     private boolean active;
     private Instant createdAt;
-    private Instant updateAdt;
+    private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
 
@@ -50,6 +51,7 @@ public class Job {
     private List<Skill> skills;
 
     @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Resume> resumes;
 
     @PrePersist
@@ -60,7 +62,7 @@ public class Job {
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateAdt = Instant.now();
+        this.updatedAt = Instant.now();
         this.updatedBy = SecurityUtil.getCurrentUserLogin().orElse("");
     }
 

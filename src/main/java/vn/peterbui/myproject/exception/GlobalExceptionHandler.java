@@ -86,4 +86,13 @@ public class GlobalExceptionHandler {
         res.setError("Exception upload file occurs...");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
+
+    @ExceptionHandler(value = {PermissionException.class})
+    public ResponseEntity<ApiResponse<Object>> handlePermissionException(PermissionException e) {
+        ApiResponse<Object> res = new ApiResponse<>();
+        res.setStatusCode(HttpStatus.FORBIDDEN.value());
+        res.setMessage(e.getMessage());
+        res.setError("Forbidden...");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(res);
+    }
 }

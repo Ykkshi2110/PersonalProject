@@ -39,7 +39,7 @@ public class Company {
     private List<Job> jobs;
 
     private Instant createdAt;
-    private Instant updateAt;
+    private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
 
@@ -53,6 +53,6 @@ public class Company {
     @PreUpdate
     public void handleBeforeUpdate(){
         this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 }

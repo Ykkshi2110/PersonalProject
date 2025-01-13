@@ -19,23 +19,25 @@ public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
-    @NotNull
-    private String address;
+
+    private String name;
 
     @NotNull
     @Email(message = "Invalid Email", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
-    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
+
+    @NotNull
+    private String address;
+
+    private int age;
 
     @NotNull
     @Size(min = 6, message = "Password must be at least 6 character")
     private String password;
 
-    private int age;
-
-    @Enumerated(EnumType.STRING)
-    private GenderEnum gender;
 
     private Instant updatedAt;
     private Instant createdAt;

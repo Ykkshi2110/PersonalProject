@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ResCreateJobDTO {
+    private long id;
     private String name;
     private String location;
     private double salary;
@@ -17,8 +18,8 @@ public class ResCreateJobDTO {
     private LevelEnum level;
     private Instant startDate;
     private Instant endDate;
-    private boolean active;
     private List<String> skills;
     private Instant createdAt;
     private String createdBy;
+    private boolean active;
 }
