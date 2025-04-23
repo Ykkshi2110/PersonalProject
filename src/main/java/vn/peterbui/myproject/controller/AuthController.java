@@ -37,6 +37,7 @@ public class AuthController {
     private final SecurityUtil securityUtil;
     private final UserService userService;
     private final ConvertUtils convertUtils;
+
     @Value("${peterBui.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
 

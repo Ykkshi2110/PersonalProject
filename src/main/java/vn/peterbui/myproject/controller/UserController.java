@@ -21,7 +21,7 @@ import vn.peterbui.myproject.service.UserService;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class UserController {
+public class    UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
@@ -64,7 +64,7 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<ApiResponse<Object>> handleDeleteUser(@PathVariable long id) {
         this.userService.handleDeleteUser(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }

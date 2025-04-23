@@ -1,14 +1,11 @@
 package vn.peterbui.myproject.config;
 
-import org.modelmapper.Condition;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import vn.peterbui.myproject.domain.Company;
-import vn.peterbui.myproject.domain.Resume;
 import vn.peterbui.myproject.domain.response.ResCreateUserDTO;
-import vn.peterbui.myproject.domain.response.ResResumeDTO;
 import vn.peterbui.myproject.domain.response.ResUpdateUserDTO;
 import vn.peterbui.myproject.domain.response.ResUserDTO;
 

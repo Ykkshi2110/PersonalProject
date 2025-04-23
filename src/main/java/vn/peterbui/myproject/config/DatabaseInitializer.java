@@ -97,12 +97,12 @@ public class DatabaseInitializer implements CommandLineRunner {
         if (countRecordUser == 0) {
             // user
             User user = new User();
-            user.setEmail("PeterBui@gmail.com");
+            user.setEmail("admin@gmail.com");
             user.setAddress("179/58/16 Lê Đình Thám");
-            user.setName("Peter Bùi Đz number1");
+            user.setName("ADMIN");
             user.setAge(20);
             user.setGender(GenderEnum.MALE);
-            user.setPassword(passwordEncoder.encode("Buianhquoc2110@"));
+            user.setPassword(passwordEncoder.encode("123123123"));
             Role adminRole = this.roleRepository.findByName("SUPER_ADMIN");
             if(adminRole != null) {
                 user.setRole(adminRole);

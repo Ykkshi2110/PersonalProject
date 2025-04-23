@@ -69,7 +69,7 @@ public class UserService {
                     .getId()).orElseThrow(null);
             reqCreateUser.setCompany(reqCompany);
         }
-        // check Role by id 
+        // check Role by id
         if(reqCreateUser.getRole() != null){
             Role reqRole = this.roleRepository.findById(reqCreateUser
                     .getRole().getId()).orElse(null);

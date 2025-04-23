@@ -29,6 +29,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<start-class>vn.peterbui.myproject.MyprojectApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -136,6 +137,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>
+						vn.peterbui.myproject.MyprojectApplication
+					</mainClass>
+					<layout>
+						JAR
+					</layout>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>
+								repackage
+							</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
